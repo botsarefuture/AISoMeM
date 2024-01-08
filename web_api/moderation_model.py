@@ -46,7 +46,7 @@ class ModerationModel:
 
     def _log_comment(self, label, comment):
         if self.learns:
-            filename = f"{label}_future.txt"
+            filename = f"../training/{label}_future.txt"
             with open(filename, "a", encoding="utf-8") as f:
                 f.write(comment + '\n')
             logger.debug(f"Added to future training data for label {label}.")
