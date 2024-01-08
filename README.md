@@ -1,3 +1,8 @@
+**WARNING: README IN PROGRESS**
+  
+⚠️ This README is currently under construction. Please be aware that the information provided may not be complete or finalized. Feel free to check back later for the complete documentation. Thank you for your understanding! ⚠️
+
+
 # AISoMeM - Artificial Intelligence Social Media Moderation
 
 ## Overview
