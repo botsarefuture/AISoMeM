@@ -19,7 +19,7 @@ AISoMeM is a project focused on using artificial intelligence for social media c
 
 ### Installation
 
-1. Clone the repository: `git clone https://github.com/your-username/AISoMeM.git`
+1. Clone the repository: `git clone https://github.com/botsarefuture/AISoMeM.git`
 2. Install dependencies: `pip install -r requirements.txt`
 
 ### Usage
