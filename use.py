@@ -4,6 +4,10 @@ import joblib
 from funcs import get_most_probable_class_and_percent
 from web_api.log import logger
 
+from profane_detector import ProfaneDetector
+
+profane_detector = ProfaneDetector()
+
 nltk.download('punkt')
 
 MODEL_FILE = 'moderation_model.joblib'
@@ -26,6 +30,14 @@ class ModerationModel:
         return model
 
     def moderate_comment(self, comment):
+        result = profane_detector.detect_api(None, comment)
+        
+        if result == True:
+            self._log_comment(1, comment)
+            logger.info("Comment flagged for moderation.")
+            logger.debug(f"The certainty of '{comment}' being 1 is 100%")
+            return True
+
         # Use the trained model to get the most probable class and its probability
         most_probable_class, percent = get_most_probable_class_and_percent(self.model, [comment])
 
@@ -34,12 +46,12 @@ class ModerationModel:
             if most_probable_class == 1:
                 self._log_comment(1, comment)
                 logger.info("Comment flagged for moderation.")
-                logger.debug(f"The certainty of '{comment}' being {most_probable_class} is {percent}%")
+                logger.debug(f"The certainty of '{comment}' being {most_probable_class} is {percent[0]}%")
                 return True
             elif most_probable_class == 0:
                 self._log_comment(0, comment)
                 logger.info("Comment approved.")
-                logger.debug(f"The certainty of '{comment}' being {most_probable_class} is {percent}%")
+                logger.debug(f"The certainty of '{comment}' being {most_probable_class} is {percent[0]}%")
                 return False
             
         else:
