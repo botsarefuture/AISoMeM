@@ -6,6 +6,12 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import make_pipeline
 
+from profane_detector import ProfaneDetector
+
+profane_detector = ProfaneDetector()
+
+LANG = None
+
 MODEL_FILE = '../moderation_model.joblib'
 
 def load_model():
@@ -15,6 +21,34 @@ def load_model():
         return None
 
     return joblib.load(MODEL_FILE)
+
+def profane_included(text):
+    return profane_detector.detect_api(LANG, text)
+
+def check_all(texts, label):   
+    def remove_from_original(text_to_find):
+        with open(f"0.txt", "r", encoding="utf-8") as f:
+            text = f.read()
+        
+        text = text.replace(f"{text_to_find}\n", "")
+        text = text.replace(f"\n\n", "\n")
+        
+        with open("0.txt", "w", encoding="utf-8") as f:
+            f.write(text)
+        
+        with open("1.txt", "a", encoding="utf-8") as f:
+            f.write(text_to_find + "\n")
+    
+    for text in texts.split("\n"):
+        result = profane_included(text)
+        
+        corrected_label = 1 if result else 0
+        
+        print(text, corrected_label)
+        
+        if corrected_label != label and corrected_label != 0:
+            print(f"corrected {text} from {label} to {corrected_label}")
+            remove_from_original(text)
 
 def load_comments(file_path):
     # Load comments from the specified file
@@ -90,6 +124,9 @@ if __name__ == "__main__":
 
     if moderation_model is not None:
         # Load additional data from 0.txt and 1.txt
+        with open("0.txt", "r", encoding="utf-8") as f:
+            check_all(f.read(), 0)
+        
         comments_0_additional = load_comments("0.txt") + load_comments("0_future.txt")
         comments_1_additional = load_comments("1.txt") + load_comments("1_future.txt")
 
