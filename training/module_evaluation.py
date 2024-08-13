@@ -1,16 +1,14 @@
-# moderation_evaluation.py
 import os
 import joblib
-from preprocessing import preprocess_text
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import make_pipeline
 
-from profane_detector import ProfaneDetector
-
-profane_detector = ProfaneDetector()
-
-LANG = None
+# Placeholder for ProfaneDetector class (not implemented here)
+class ProfaneDetector:
+    def detect_api(self, lang, text):
+        # Placeholder function to simulate profane detection
+        return False  # Replace with actual implementation
 
 MODEL_FILE = '../moderation_model.joblib'
 
@@ -19,36 +17,7 @@ def load_model():
     if not os.path.exists(MODEL_FILE):
         print("Error: Moderation model not found. Train a model first.")
         return None
-
     return joblib.load(MODEL_FILE)
-
-def profane_included(text):
-    return profane_detector.detect_api(LANG, text)
-
-def check_all(texts, label):   
-    def remove_from_original(text_to_find):
-        with open(f"0.txt", "r", encoding="utf-8") as f:
-            text = f.read()
-        
-        text = text.replace(f"{text_to_find}\n", "")
-        text = text.replace(f"\n\n", "\n")
-        
-        with open("0.txt", "w", encoding="utf-8") as f:
-            f.write(text)
-        
-        with open("1.txt", "a", encoding="utf-8") as f:
-            f.write(text_to_find + "\n")
-    
-    for text in texts.split("\n"):
-        result = profane_included(text)
-        
-        corrected_label = 1 if result else 0
-        
-        print(text, corrected_label)
-        
-        if corrected_label != label and corrected_label != 0:
-            print(f"corrected {text} from {label} to {corrected_label}")
-            remove_from_original(text)
 
 def load_comments(file_path):
     # Load comments from the specified file
@@ -69,7 +38,7 @@ def fit_new_data_to_model(model, comments, labels):
 
 def train_updated_model(X_train, y_train):
     # Create a pipeline with a CountVectorizer and a Multinomial Naive Bayes classifier
-    updated_model = make_pipeline(CountVectorizer(preprocessor=preprocess_text), MultinomialNB())
+    updated_model = make_pipeline(CountVectorizer(), MultinomialNB())
 
     # Train the updated model
     updated_model.fit(X_train, y_train)
@@ -78,11 +47,6 @@ def train_updated_model(X_train, y_train):
     joblib.dump(updated_model, MODEL_FILE)
 
     return updated_model
-
-def list2str(list_item):
-    # Convert a list of items to a space-separated string
-    text = " ".join(list_item)
-    return text
 
 def load_existing_training_data():
     # Load existing training data from a file
@@ -94,10 +58,10 @@ def load_existing_training_data():
             lines = file.readlines()
             for line in lines:
                 things = line.strip().split(',')
-                label = things[-1]
-                comment = list2str(things[:len(things)-1])
+                label = int(things[-1])
+                comment = ','.join(things[:len(things)-1])
                 existing_X_train.append(comment)
-                existing_y_train.append(int(label))
+                existing_y_train.append(label)
 
     return existing_X_train, existing_y_train
 
@@ -124,9 +88,6 @@ if __name__ == "__main__":
 
     if moderation_model is not None:
         # Load additional data from 0.txt and 1.txt
-        with open("0.txt", "r", encoding="utf-8") as f:
-            check_all(f.read(), 0)
-        
         comments_0_additional = load_comments("0.txt") + load_comments("0_future.txt")
         comments_1_additional = load_comments("1.txt") + load_comments("1_future.txt")
 

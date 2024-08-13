@@ -1,0 +1,12 @@
+{
+    "mongodb_uri": "mongodb://95.216.148.93:27017/",
+    "db_name": "comment_moderation",
+    "instagram_access_token": "EAAG52lCrTcsBOwWHwUq0i3gwrUyNisjeRW63CvMP2NZCQHVxwl8HBcbFzrJ7WyAyQlWRNC16E5yd9ZBXa9jP9k5YZAX9FL37P2CrK9ZAGqD7ZCZBGoiDZAUnxZA0HKhvfZBgpMhb15y4tp9Gs9ZCQhflu6yWKzTrp8DKIzV6RzCKmC2vVqdlXBofKlycaFkCYk4hc2",
+    "instagram_api_version": "v20.0",
+    "instagram_verify_token": "tokenHardYes!FuckHaters!",
+    "improve": true,
+    "human_review": false,
+    "flask_debug": true,
+    "flask_port": 5000
+  }
+  

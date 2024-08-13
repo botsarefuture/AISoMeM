@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment Review</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: #4CAF50;
+        }
+
+        p {
+            margin: 20px 0;
+        }
+
+        .comment,
+        .evaluation {
+            background: #e7f5fe;
+            padding: 15px;
+            border-radius: 5px;
+            overflow: auto;
+            max-height: 200px;
+        }
+
+        form {
+            display: inline-block;
+            margin: 10px;
+        }
+
+        button {
+            background: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #005eff;
+        }
+        
+        button.skip {
+            background: orange;
+        }
+
+        button.remove {
+            background: red;
+        }
+
+        button.approve {
+            background: green;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Review Comment</h1>
+        <p><strong>Comment:</strong></p>
+        <div class="comment">
+            <span>{{ comment_text }}</span>
+        </div>
+        <p><strong>Evaluation:</strong> <span class="evaluation">{{ evaluation_result }}</span></p>
+        <form action="{{ url_for('approve', comment_id=comment_id) }}" method="post">
+            <button class="approve" type="submit">Approve</button>
+        </form>
+        <form action="{{ url_for('remove', comment_id=comment_id) }}" method="post">
+            <button class="remove" type="submit">Remove</button>
+        </form>
+        <form action="{{ url_for('skip', comment_id=comment_id) }}" method="post">
+            <button class="skip" type="submit">Skip</button>
+        </form>
+    </div>
+</body>
+
+</html>
