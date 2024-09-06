@@ -29,8 +29,9 @@ class ModerationModelTest:
             "accuracy": accuracy,
             "precision": precision,
             "recall": recall,
-            "f1_score": f1
+            "f1_score": f1,
         }
+
 
 # Example test data: list of tuples (comment, label) where label is 0 for approved and 1 for flagged
 test_data = [
@@ -39,11 +40,13 @@ test_data = [
     ("I love this post.", 0),
     ("You are stupid!", 1),
     ("Great job!", 0),
-    ("This is spam.", 1)
+    ("This is spam.", 1),
 ]
 
 # Assuming the moderation model is already trained and available as `moderation_model`
-moderation_model = ModerationModel(learns=False, human_review=False)  # Set human_review to False for automated testing
+moderation_model = ModerationModel(
+    learns=False, human_review=False
+)  # Set human_review to False for automated testing
 
 # Create test suite instance
 test_suite = ModerationModelTest(moderation_model)

@@ -4,13 +4,16 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import make_pipeline
 
+
 # Placeholder for ProfaneDetector class (not implemented here)
 class ProfaneDetector:
     def detect_api(self, lang, text):
         # Placeholder function to simulate profane detection
         return False  # Replace with actual implementation
 
-MODEL_FILE = '../moderation_model.joblib'
+
+MODEL_FILE = "../moderation_model.joblib"
+
 
 def load_model():
     # Load the pre-trained moderation model from the file
@@ -19,11 +22,13 @@ def load_model():
         return None
     return joblib.load(MODEL_FILE)
 
+
 def load_comments(file_path):
     # Load comments from the specified file
-    with open(file_path, 'r', encoding="utf-8") as file:
+    with open(file_path, "r", encoding="utf-8") as file:
         comments = file.readlines()
     return comments
+
 
 def fit_new_data_to_model(model, comments, labels):
     # Add new data to the existing training data and retrain the model
@@ -35,6 +40,7 @@ def fit_new_data_to_model(model, comments, labels):
     model = train_updated_model(X_train, y_train)
 
     return model
+
 
 def train_updated_model(X_train, y_train):
     # Create a pipeline with a CountVectorizer and a Multinomial Naive Bayes classifier
@@ -48,39 +54,43 @@ def train_updated_model(X_train, y_train):
 
     return updated_model
 
+
 def load_existing_training_data():
     # Load existing training data from a file
     existing_X_train = []
     existing_y_train = []
 
     if os.path.exists("existing_training_data.txt"):
-        with open("existing_training_data.txt", 'r', encoding="utf-8") as file:
+        with open("existing_training_data.txt", "r", encoding="utf-8") as file:
             lines = file.readlines()
             for line in lines:
-                things = line.strip().split(',')
+                things = line.strip().split(",")
                 label = int(things[-1])
-                comment = ','.join(things[:len(things)-1])
+                comment = ",".join(things[: len(things) - 1])
                 existing_X_train.append(comment)
                 existing_y_train.append(label)
 
     return existing_X_train, existing_y_train
 
+
 def save_training_data(X_train, y_train):
     # Save the training data to a file
-    with open("existing_training_data.txt", 'w', encoding="utf-8") as file:
+    with open("existing_training_data.txt", "w", encoding="utf-8") as file:
         for comment, label in zip(X_train, y_train):
             comment = comment.replace("\n", "")
             file.write(f"{comment},{label}\n")
 
+
 def move_comments(source_path, destination_path):
     # Move comments from source_path to destination_path
     comments = load_comments(source_path)
-    with open(destination_path, 'a', encoding="utf-8") as dest_file:
+    with open(destination_path, "a", encoding="utf-8") as dest_file:
         dest_file.writelines(comments)
 
     # Clear the source file
-    with open(source_path, 'w'):
+    with open(source_path, "w"):
         pass
+
 
 if __name__ == "__main__":
     # Load the pre-trained moderation model
@@ -96,11 +106,17 @@ if __name__ == "__main__":
         labels_1_additional = [1] * len(comments_1_additional)
 
         # Fit new data to the existing model
-        updated_model = fit_new_data_to_model(moderation_model, comments_0_additional + comments_1_additional,
-                                              labels_0_additional + labels_1_additional)
+        updated_model = fit_new_data_to_model(
+            moderation_model,
+            comments_0_additional + comments_1_additional,
+            labels_0_additional + labels_1_additional,
+        )
 
         # Save the combined training data
-        save_training_data(comments_0_additional + comments_1_additional, labels_0_additional + labels_1_additional)
+        save_training_data(
+            comments_0_additional + comments_1_additional,
+            labels_0_additional + labels_1_additional,
+        )
 
         # Move evaluated comments from 0_future.txt to 0.txt
         move_comments("0_future.txt", "0.txt")

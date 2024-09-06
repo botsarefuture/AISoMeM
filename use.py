@@ -8,9 +8,10 @@ from profane_detector import ProfaneDetector
 
 profane_detector = ProfaneDetector()
 
-nltk.download('punkt')
+nltk.download("punkt")
 
-MODEL_FILE = 'moderation_model.joblib'
+MODEL_FILE = "moderation_model.joblib"
+
 
 class ModerationModel:
     def __init__(self, learns=False):
@@ -31,7 +32,7 @@ class ModerationModel:
 
     def moderate_comment(self, comment):
         result = profane_detector.detect_api(None, comment)
-        
+
         if result == True:
             self._log_comment(1, comment)
             logger.info("Comment flagged for moderation.")
@@ -39,39 +40,52 @@ class ModerationModel:
             return True
 
         # Use the trained model to get the most probable class and its probability
-        most_probable_class, percent = get_most_probable_class_and_percent(self.model, [comment])
+        most_probable_class, percent = get_most_probable_class_and_percent(
+            self.model, [comment]
+        )
 
         # Moderation decision based on the most probable class (0: approved, 1: flagged)
         if percent > 60:
             if most_probable_class == 1:
                 self._log_comment(1, comment)
                 logger.info("Comment flagged for moderation.")
-                logger.debug(f"The certainty of '{comment}' being {most_probable_class} is {percent[0]}%")
+                logger.debug(
+                    f"The certainty of '{comment}' being {most_probable_class} is {percent[0]}%"
+                )
                 return True
             elif most_probable_class == 0:
                 self._log_comment(0, comment)
                 logger.info("Comment approved.")
-                logger.debug(f"The certainty of '{comment}' being {most_probable_class} is {percent[0]}%")
+                logger.debug(
+                    f"The certainty of '{comment}' being {most_probable_class} is {percent[0]}%"
+                )
                 return False
-            
+
         else:
             logger.warning("Model uncertainty. Defaulting to approval.")
-            logger.debug(f"Model guessed that '{comment}' is {'negative' if most_probable_class == 0 else 'positive'} with certainty {percent}%")
+            logger.debug(
+                f"Model guessed that '{comment}' is {'negative' if most_probable_class == 0 else 'positive'} with certainty {percent}%"
+            )
             return False
 
     def _log_comment(self, label, comment):
         if self.learns:
             filename = f"training/{label}_future.txt"
             with open(filename, "a", encoding="utf-8") as f:
-                f.write(comment + '\n')
+                f.write(comment + "\n")
             logger.debug(f"Added to future training data for label {label}.")
 
         else:
-            logger.debug("Learning has been disabled by config. Won't add comments to future training data.")
+            logger.debug(
+                "Learning has been disabled by config. Won't add comments to future training data."
+            )
+
 
 if __name__ == "__main__":
     # Example usage from the command prompt
-    model_instance = ModerationModel(learns=True)  # Set learns to True if you want to collect future training data
+    model_instance = ModerationModel(
+        learns=True
+    )  # Set learns to True if you want to collect future training data
     while True:
         comment_to_moderate = input("Enter the comment to moderate: ")
         model_instance.moderate_comment(comment_to_moderate)
