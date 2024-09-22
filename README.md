@@ -1,26 +1,25 @@
-**WARNING: README IN PROGRESS**
-  
-⚠️ This README is currently under construction. Please be aware that the information provided may not be complete or finalized. Feel free to check back later for the complete documentation. Thank you for your understanding! ⚠️
-
-
 # AISoMeM - Artificial Intelligence Social Media Moderation
+
+**WARNING: THIS REPO IS DEPRECATED**
+
+⚠️ Please note that this repository is no longer being maintained. AISoMeM has changed its name to **HaSpDe**. For the latest updates and developments, visit [github.com/HateSpeechDetection](https://github.com/HateSpeechDetection/). Thank you for your understanding! ⚠️
 
 ## Overview
 
-AISoMeM is a project focused on using artificial intelligence for social media content moderation. The goal is to automate the process of moderating user-generated content on social media platforms, making it more efficient and effective.
+HaSpDe is a project dedicated to utilizing artificial intelligence for social media content moderation. Its aim is to streamline the process of moderating user-generated content on social media platforms, enhancing both efficiency and effectiveness.
 
 ## Features
 
-- **Machine Learning Model:** Utilizes a machine learning model for content moderation.
-- **Comment Moderation:** Flags or approves comments based on the model predictions.
-- **Learning Capability:** Optionally collects data for future model training.
+- **Machine Learning Model:** Employs a machine learning model to automate content moderation.
+- **Comment Moderation:** Flags or approves comments based on model predictions.
+- **Learning Capability:** Can collect data for future model training, improving accuracy over time.
 
 ## Getting Started
 
 ### Prerequisites
 
 - Python (>=3.6 and <=3.11.x)
-- Required Python packages (specified in requirements.txt)
+- Required Python packages (listed in `requirements.txt`)
 
 ### Installation
 
@@ -30,16 +29,16 @@ AISoMeM is a project focused on using artificial intelligence for social media c
 ### Usage
 
 1. Run the moderation script: `python moderation_script.py`
-2. Enter the comment to be moderated when prompted.
+2. When prompted, enter the comment to be moderated.
 
 ## Configuration
 
-- Adjust the moderation script settings in `moderation_script.py`.
-- Fine-tune the machine learning model parameters as needed.
+- Modify the moderation script settings in `moderation_script.py`.
+- Fine-tune machine learning model parameters as needed for optimal performance.
 
 ## Contributing
 
-Contributions are welcome! If you want to contribute to AISoMeM, please follow the [Contribution Guidelines](CONTRIBUTING.md).
+Contributions are welcome! If you'd like to help improve HaSpDe, please follow the [Contribution Guidelines](CONTRIBUTING.md).
 
 ## License
 
@@ -47,5 +46,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Acknowledgments
 
-- Shoutout to the open-source community and contributors.
-
+A big thank you to the open-source community and all contributors!
