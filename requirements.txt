@@ -18,4 +18,4 @@ scipy==1.14.1
 threadpoolctl==3.5.0
 tqdm==4.66.5
 urllib3==2.2.2
-Werkzeug==3.0.4
+Werkzeug==3.0.6
